@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemakaian Mobil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #005A9C; --accent-yellow: #FFC72C; --accent-green: #28a745;
+            --light-gray: #f0f0f0; --dark-gray: #a0a0a0; --bg-white: #ffffff; --text-color: #333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-white); color: var(--text-color); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 20px; }
+        .main-container { width: 100%; max-width: 500px; opacity: 0; transform: translateY(20px); animation: fadeIn 1s ease-out forwards; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+        header h1 { text-align: center; color: var(--primary-blue); font-size: 2rem; margin-bottom: 2rem; font-weight: 700; }
+        .car-card { background-color: var(--bg-white); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 90, 156, 0.1); border: 1px solid var(--light-gray); transition: transform 0.3s ease; }
+        .car-card:hover { transform: translateY(-5px); }
+        .car-image-container { height: 120px; border-radius: 10px; margin-bottom: 15px; background-size: cover; background-position: center; }
+        .car-card[data-car-name="Avanza KZU"] .car-image-container { background-image: url('https://yanoshijapan.github.io/gambarmobil/20230924125944-3c85.jpeg'); }
+        .car-card[data-car-name="Innova KFV"] .car-image-container { background-image: url('https://yanoshijapan.github.io/gambarmobil/2020-toyota-innova-crysta-trd-sportivo.jpg'); }
+        .car-header { display: flex; align-items: center; gap: 15px; font-size: 1.5rem; font-weight: 600; color: var(--primary-blue); }
+        .car-header i { color: var(--accent-yellow); }
+        .fuel-container { margin-top: 15px; display: flex; align-items: center; gap: 10px; }
+        .fuel-icon { font-size: 1.5rem; color: var(--primary-blue); }
+        .fuel-bar-background { flex-grow: 1; height: 20px; background-color: var(--light-gray); border-radius: 10px; overflow: hidden; }
+        .fuel-bar-percentage { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-yellow), #ffd75e); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); font-weight: 600; font-size: 0.8rem; transition: width 1s cubic-bezier(0.25, 1, 0.5, 1); }
+        .status-section { margin-top: 15px; }
+        .current-status { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; padding-top: 15px; border-top: 1px solid var(--light-gray); }
+        .status-available { color: var(--accent-green); }
+        .status-in-use { color: #dc3545; }
+        .booking-list-title { font-size: 0.9rem; font-weight: 600; color: var(--primary-blue); margin-bottom: 5px; }
+        .booking-list { list-style: none; padding-left: 5px; max-height: 150px; overflow-y: auto; }
+        .booking-list li { font-size: 0.9rem; padding: 8px 5px; border-bottom: 1px solid #e9e9e9; display: flex; justify-content: space-between; align-items: center; }
+        .no-booking { font-style: italic; color: #777; font-size: 0.9rem; }
+        .button-group { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .btn { text-decoration: none; color: var(--bg-white); padding: 12px 5px; border-radius: 8px; text-align: center; font-weight: 600; border: none; cursor: pointer; font-size: 0.8rem; transition: background-color 0.3s ease; }
+        .btn:active { transform: scale(0.97); }
+        .btn-booking { background-color: var(--primary-blue); }
+        .btn-start { background-color: var(--accent-green); }
+        .btn-finish { background-color: var(--accent-yellow); color: var(--primary-blue); }
+        .loader { text-align: center; padding: 20px; font-size: 1rem; color: var(--primary-blue); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: flex-start; padding-top: 5vh; overflow-y: auto; opacity: 0; z-index: 1000; transition: opacity 0.4s ease; }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content { background-color: var(--bg-white); color: var(--primary-blue); padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); transform: scale(0.9); animation: zoomIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; margin-bottom: 5vh; }
+        @keyframes zoomIn { to { transform: scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h2 { font-size: 1.5rem; }
+        .modal-close-btn { font-size: 1.8rem; color: var(--dark-gray); cursor: pointer; border: none; background: none; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--accent-yellow); box-shadow: 0 0 0 3px rgba(255, 199, 44, 0.4); }
+        .modal-submit-btn { width: 100%; padding: 15px; background-color: var(--primary-blue); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
+        .modal-submit-btn:disabled { background-color: var(--dark-gray); cursor: wait; }
+        .radio-group { display: flex; flex-wrap: wrap; gap: 15px; }
+        .radio-group label { display: flex; align-items: center; margin-bottom: 0; }
+        .radio-group input { margin-right: 5px; }
+        .photo-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .photo-preview img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+        .history-button-container { text-align: center; margin-top: 25px; }
+        .btn-history { background-color: #6c757d; padding: 12px 25px; font-size: 1rem; }
+        #history-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        #history-table th, #history-table td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 0.9rem; }
+        #history-table th { background-color: var(--primary-blue); color: white; }
+        #history-table tr:nth-child(even) { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <main class="main-container">
+        <header><h1>Pemakaian Mobil</h1></header>
+        <div id="cars-details-container"><div class="loader"><i class="fas fa-spinner fa-spin"></i> Memuat data mobil...</div></div>
+        <div class="history-button-container">
+            <button class="btn btn-history" id="open-history-btn">Cek Riwayat Pengguna</button>
+        </div>
+    </main>
+
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="booking-modal-title">Booking Mobil</h2><button class="modal-close-btn">&times;</button></div>
+            <form id="booking-form">
+                <input type="hidden" name="formType" value="booking">
+                <input type="hidden" id="booking-car-name-input" name="carName">
+                <div class="form-group"><label for="nama-lengkap">Nama Lengkap</label><input type="text" id="nama-lengkap" name="namaLengkap" required></div>
+                <div class="form-group"><label for="tanggal-pakai">Tanggal Digunakan</label><input type="date" id="tanggal-pakai" name="tanggalPakai" required></div>
+                <div class="form-group"><label for="keperluan">Keperluan</label><textarea id="keperluan" name="keperluan" rows="2" required></textarea></div>
+                <div class="form-group"><label for="tujuan">Tujuan</label><input type="text" id="tujuan" name="tujuan" required></div>
+                <div class="form-group"><label for="mulai-jam">Mulai Dipakai Jam</label><input type="time" id="mulai-jam" name="mulaiJam" required></div>
+                <div class="form-group"><label for="estimasi">Estimasi Pemakaian (Contoh: 3 jam)</label><input type="text" id="estimasi" name="estimasi" required></div>
+                <button type="submit" class="modal-submit-btn">Booking Sekarang</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="start-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="start-modal-title">Form Mulai Pakai</h2><button class="modal-close-btn">&times;</button></div>
+            <form id="start-form">
+                <input type="hidden" name="formType" value="mulai">
+                <input type="hidden" id="start-car-name-input" name="carName">
+                <div class="form-group"><label for="start-tanggal-cek">Tanggal Cek</label><input type="date" id="start-tanggal-cek" name="tanggalCek" required></div>
+                <div class="form-group"><label for="start-nama-pengguna">Nama</label><input type="text" id="start-nama-pengguna" name="namaPengguna" required readonly></div>
+                <div class="form-group"><label>Kondisi Ban</label><div class="radio-group"><label><input type="radio" name="kondisiBan" value="Baik" required> Baik</label><label><input type="radio" name="kondisiBan" value="Cukup"> Cukup</label><label><input type="radio" name="kondisiBan" value="Perlu Diperiksa"> Perlu Diperiksa</label></div></div>
+                <div class="form-group"><label>Kondisi Lampu</label><div class="radio-group"><label><input type="radio" name="kondisiLampu" value="Semua Menyala" required> Semua Menyala</label><label><input type="radio" name="kondisiLampu" value="Ada yang Mati"> Ada yang Mati</label></div></div>
+                <div class="form-group"><label for="start-interior">Kebersihan Interior</label><select id="start-interior" name="interior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
+                <div class="form-group"><label for="start-eksterior">Kebersihan Eksterior</label><select id="start-eksterior" name="eksterior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
+                <div class="form-group"><label for="start-km-awal">Kilometer Awal</label><input type="number" id="start-km-awal" name="kmAwal" required></div>
+                <div class="form-group"><label for="start-bensin-awal">Bensin Awal (dari sistem)</label><input type="number" id="start-bensin-awal" name="bensinAwal" required readonly></div>
+                <div class="form-group"><label for="start-saldo-etoll">Saldo Awal E-Toll</label><input type="number" id="start-saldo-etoll" name="saldoEtoll" required></div>
+                <div class="form-group"><label for="start-catatan">Catatan Lain (Opsional)</label><textarea id="start-catatan" name="catatan" rows="3"></textarea></div>
+                <div class="form-group"><label for="start-photo-upload">Upload Foto (Maks 5)</label><input type="file" id="start-photo-upload" class="photo-upload" accept="image/*" multiple><div class="photo-preview"></div></div>
+                <button type="submit" class="modal-submit-btn">Mulai Pakai</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="finish-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="finish-modal-title">Form Selesai Pakai</h2><button class="modal-close-btn">&times;</button></div>
+            <form id="finish-form">
+                <input type="hidden" name="formType" value="selesai">
+                <input type="hidden" id="finish-car-name-input" name="carName">
+                <div class="form-group"><label for="finish-tanggal-cek">Tanggal Cek</label><input type="date" id="finish-tanggal-cek" name="tanggalCek" required></div>
+                <div class="form-group"><label for="finish-nama-pengecek">Siapa yang Cek?</label><input type="text" id="finish-nama-pengecek" name="namaPengecek" required readonly></div>
+                <div class="form-group"><label>Kondisi Ban</label><div class="radio-group"><label><input type="radio" name="kondisiBan" value="Baik" required> Baik</label><label><input type="radio" name="kondisiBan" value="Cukup"> Cukup</label><label><input type="radio" name="kondisiBan" value="Perlu Diperiksa"> Perlu Diperiksa</label></div></div>
+                <div class="form-group"><label>Kondisi Lampu</label><div class="radio-group"><label><input type="radio" name="kondisiLampu" value="Semua Menyala" required> Semua Menyala</label><label><input type="radio" name="kondisiLampu" value="Ada yang Mati"> Ada yang Mati</label></div></div>
+                <div class="form-group"><label for="finish-interior">Kebersihan Interior</label><select id="finish-interior" name="interior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
+                <div class="form-group"><label for="finish-eksterior">Kebersihan Eksterior</label><select id="finish-eksterior" name="eksterior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
+                <div class="form-group"><label for="finish-km-akhir">Kilometer Akhir</label><input type="number" id="finish-km-akhir" name="kmAkhir" required></div>
+                <div class="form-group"><label for="finish-sisa-bensin">Sisa Bensin (angka 10-400)</label><input type="number" id="finish-sisa-bensin" name="sisaBensin" min="10" max="400" required></div>
+                <div class="form-group"><label for="finish-saldo-etoll">Saldo Akhir E-Toll</label><input type="number" id="finish-saldo-etoll" name="saldoEtoll" required></div>
+                <div class="form-group"><label for="finish-catatan">Catatan Lain (Opsional)</label><textarea id="finish-catatan" name="catatan" rows="3"></textarea></div>
+                <div class="form-group"><label for="finish-photo-upload">Upload Foto (Maks 5)</label><input type="file" id="finish-photo-upload" class="photo-upload" accept="image/*" multiple><div class="photo-preview"></div></div>
+                <button type="submit" class="modal-submit-btn">Kirim Laporan</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="history-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Riwayat Pengguna Selesai</h2><button class="modal-close-btn">&times;</button></div>
+            <div style="overflow-x:auto;">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama</th>
+                            <th>Tujuan</th>
+                            <th>Sisa E-Toll</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbw0dPGAr5Jqvk_7UjfWthnk0G9WhoMumC6D6_WoBWQBqTq1rKulEq1OpEg2GhlVhFKS/exec';
+        const carsContainer = document.getElementById('cars-details-container');
+        
+        // Deklarasi Modal
+        const bookingModal = document.getElementById('booking-modal');
+        const startModal = document.getElementById('start-modal');
+        const finishModal = document.getElementById('finish-modal');
+        const historyModal = document.getElementById('history-modal');
+        
+        // Deklarasi Form
+        const bookingForm = document.getElementById('booking-form');
+        const startForm = document.getElementById('start-form');
+        const finishForm = document.getElementById('finish-form');
+
+        // Deklarasi Tombol
+        const openHistoryBtn = document.getElementById('open-history-btn');
+
+        async function fetchAndDisplayCarData() {
+            try {
+                const response = await fetch(SPREADSHEET_URL);
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                
+                renderCarCards(data.carData);
+                renderHistory(data.historyData);
+
+            } catch (error) {
+                console.error("Gagal mengambil data:", error);
+                carsContainer.innerHTML = `<p style="text-align:center; color:red;">Gagal memuat data.<br><small>${error.message}</small></p>`;
+            }
+        }
+
+        function renderCarCards(cars) {
+            carsContainer.innerHTML = '';
+            cars.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                card.setAttribute('data-car-name', car.name);
+                
+                const fuelPercentage = calculateFuelPercentage(car.fuel);
+                const nextBookingUser = car.upcomingBookings.length > 0 ? car.upcomingBookings[0].user : '';
+
+                let currentStatusHTML = `<div class="current-status status-available">Tersedia</div>`;
+                if (car.currentStatus.status === 'Dipakai') {
+                    currentStatusHTML = `<div class="current-status status-in-use">Dipakai oleh: ${car.currentStatus.user}</div>`;
+                }
+
+                let upcomingListHTML = car.upcomingBookings.length > 0 
+                    ? `<ul class="booking-list">${car.upcomingBookings.map(b => `<li><span class="user-name">${b.user}</span><span class="time-info">${b.date}<br>Jam ${b.startTime}</span></li>`).join('')}</ul>`
+                    : `<p class="no-booking">Belum ada jadwal booking.</p>`;
+
+                card.innerHTML = `
+                    <div class="car-image-container"></div>
+                    <div class="car-header"><i class="fas fa-car-side fa-lg"></i><h2>${car.name}</h2></div>
+                    <div class="fuel-container">
+                        <i class="fas fa-gas-pump fuel-icon"></i>
+                        <div class="fuel-bar-background"><div class="fuel-bar-percentage" style="width: ${fuelPercentage}%;">${Math.round(fuelPercentage)}%</div></div>
+                    </div>
+                    <div class="status-section">${currentStatusHTML}<div class="booking-list-title">Jadwal Booking:</div>${upcomingListHTML}</div>
+                    <div class="button-group">
+                        <button class="btn btn-booking" data-car-name="${car.name}">Booking</button>
+                        <button class="btn btn-start" data-car-name="${car.name}" data-next-user="${nextBookingUser}" data-fuel="${car.fuel}">Mulai Pakai</button>
+                        <button class="btn btn-finish" data-car-name="${car.name}" data-current-user="${car.currentStatus.user || ''}">Selesai</button>
+                    </div>`;
+                carsContainer.appendChild(card);
+            });
+        }
+        
+        function renderHistory(history) {
+            const tableBody = document.getElementById('history-table-body');
+            if (!tableBody) return;
+            tableBody.innerHTML = ''; 
+
+            if (!history || history.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Tidak ada riwayat.</td></tr>`;
+                return;
+            }
+
+            history.forEach(item => {
+                const row = `<tr><td>${item.tanggal}</td><td>${item.nama}</td><td>${item.tujuan}</td><td>${item.etoll}</td></tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function calculateFuelPercentage(fuel) {
+            const minFuel = 10; const maxFuel = 400;
+            const clampedFuel = Math.max(minFuel, Math.min(fuel, maxFuel));
+            return ((clampedFuel - minFuel) / (maxFuel - minFuel)) * 100;
+        }
+
+        function openModal(modal) { modal.classList.add('show'); }
+        function closeModal(modal) { modal.classList.remove('show'); }
+
+        document.querySelectorAll('.modal-close-btn').forEach(btn => btn.onclick = () => btn.closest('.modal-overlay').classList.remove('show'));
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.onclick = (e) => { if (e.target === overlay) e.target.classList.remove('show'); }
+        });
+
+        carsContainer.addEventListener('click', (e) => {
+            const target = e.target;
+            const carName = target.dataset.carName;
+            if (!carName) return;
+
+            if (target.classList.contains('btn-booking')) {
+                document.getElementById('booking-modal-title').textContent = `Booking ${carName}`;
+                document.getElementById('booking-car-name-input').value = carName;
+                bookingForm.reset();
+                document.getElementById('tanggal-pakai').min = new Date().toISOString().split("T")[0];
+                openModal(bookingModal);
+            } else if (target.classList.contains('btn-start')) {
+                const nextUser = target.dataset.nextUser;
+                const fuel = target.dataset.fuel;
+                if (!nextUser) { alert("Tidak ada jadwal booking untuk mobil ini."); return; }
+                startForm.reset();
+                document.getElementById('start-modal-title').textContent = `Form Mulai Pakai ${carName}`;
+                document.getElementById('start-car-name-input').value = carName;
+                document.getElementById('start-nama-pengguna').value = nextUser;
+                document.getElementById('start-bensin-awal').value = fuel;
+                document.getElementById('start-tanggal-cek').valueAsDate = new Date();
+                openModal(startModal);
+            } else if (target.classList.contains('btn-finish')) {
+                const currentUser = target.dataset.currentUser;
+                if (!currentUser) { alert("Mobil ini sedang tidak dipakai oleh siapapun."); return; }
+                finishForm.reset();
+                document.getElementById('finish-modal-title').textContent = `Form Selesai Pakai ${carName}`;
+                document.getElementById('finish-car-name-input').value = carName;
+                document.getElementById('finish-nama-pengecek').value = currentUser;
+                document.getElementById('finish-tanggal-cek').valueAsDate = new Date();
+                openModal(finishModal);
+            }
+        });
+        
+        openHistoryBtn.addEventListener('click', () => openModal(historyModal));
+
+        async function handleFormSubmit(form, event) {
+            event.preventDefault();
+            const submitBtn = form.querySelector('.modal-submit-btn');
+            submitBtn.disabled = true;
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Mengirim...';
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            if (form.id === 'start-form' || form.id === 'finish-form') {
+                const photoInput = form.querySelector('.photo-upload');
+                data.photos = await getUploadedFiles(photoInput);
+            }
+            try {
+                await fetch(SPREADSHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                alert(`Laporan '${data.formType}' berhasil dikirim!`);
+                closeModal(form.closest('.modal-overlay'));
+                setTimeout(fetchAndDisplayCarData, 3000);
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Terjadi kesalahan saat mengirim laporan.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        }
+
+        bookingForm.addEventListener('submit', (e) => handleFormSubmit(bookingForm, e));
+        startForm.addEventListener('submit', (e) => handleFormSubmit(startForm, e));
+        finishForm.addEventListener('submit', (e) => handleFormSubmit(finishForm, e));
+
+        async function getUploadedFiles(fileInput) {
+            const files = Array.from(fileInput.files).slice(0, 5);
+            const filePromises = files.map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve({ name: file.name, mimeType: file.type, data: e.target.result.split(',')[1] });
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file);
+                });
+            });
+            return await Promise.all(filePromises);
+        }
+
+        document.querySelectorAll('.photo-upload').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const previewContainer = e.target.nextElementSibling;
+                previewContainer.innerHTML = '';
+                const files = Array.from(e.target.files).slice(0, 5);
+                files.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        });
+        
+        fetchAndDisplayCarData();
+        setInterval(fetchAndDisplayCarData, 60000);
+    });
+    </script>
+</body>
+</html>
