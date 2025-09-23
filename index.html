@@ -52,6 +52,7 @@
         .current-status { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; padding-top: 15px; border-top: 1px solid var(--light-gray); }
         .status-available { color: var(--accent-green); }
         .status-in-use { color: #e74c3c; }
+        .status-booked { color: #f39c12; }
         .booking-list-title { font-size: 0.9rem; font-weight: 600; color: var(--accent-blue); margin-bottom: 5px; }
         .booking-list { list-style: none; padding-left: 5px; max-height: 150px; overflow-y: auto; }
         .booking-list li { font-size: 0.9rem; padding: 8px 5px; border-bottom: 1px solid var(--light-gray); display: flex; justify-content: space-between; align-items: center; }
@@ -221,16 +222,25 @@
                 
                 const fuelPercentage = calculateFuelPercentage(car.fuel);
                 const nextBookingUser = car.upcomingBookings.length > 0 ? car.upcomingBookings[0].user : '';
-
-                let currentStatusHTML = `<div class="current-status status-available">Tersedia</div>`;
+        
+                // --- PENAMBAHAN LOGIKA BARU DI SINI ---
+                let currentStatusHTML = '';
                 if (car.currentStatus.status === 'Dipakai') {
+                    // Jika sedang dipakai, tampilkan status "Dipakai oleh..."
                     currentStatusHTML = `<div class="current-status status-in-use">Dipakai oleh: ${car.currentStatus.user}</div>`;
+                } else if (car.upcomingBookings.length > 0) {
+                    // JIKA TIDAK DIPAKAI, TAPI ADA BOOKING BERIKUTNYA, tampilkan status "Di-booking oleh..."
+                    currentStatusHTML = `<div class="current-status status-booked">Di-booking oleh: ${car.upcomingBookings[0].user}</div>`;
+                } else {
+                    // Jika tidak dipakai dan tidak ada booking, tampilkan "Tersedia"
+                    currentStatusHTML = `<div class="current-status status-available">Tersedia</div>`;
                 }
-
+                // --- AKHIR PENAMBAHAN LOGIKA ---
+        
                 let upcomingListHTML = car.upcomingBookings.length > 0 
                     ? `<ul class="booking-list">${car.upcomingBookings.map(b => `<li><span class="user-name">${b.user}</span><span class="time-info">${b.date}<br>Jam ${b.startTime}</span></li>`).join('')}</ul>`
                     : `<p class="no-booking">Belum ada jadwal booking.</p>`;
-
+        
                 card.innerHTML = `
                     <div class="car-image-container"></div>
                     <div class="car-header"><i class="fas fa-car-side fa-lg"></i><h2>${car.name}</h2></div>
@@ -238,7 +248,11 @@
                         <i class="fas fa-gas-pump fuel-icon"></i>
                         <div class="fuel-bar-background"><div class="fuel-bar-percentage" style="width: ${fuelPercentage}%;">${Math.round(fuelPercentage)}%</div></div>
                     </div>
-                    <div class="status-section">${currentStatusHTML}<div class="booking-list-title">Jadwal Booking:</div>${upcomingListHTML}</div>
+                    <div class="status-section">
+                        ${currentStatusHTML}
+                        <div class="booking-list-title">Jadwal Booking:</div>
+                        ${upcomingListHTML}
+                    </div>
                     <div class="button-group">
                         <button class="btn btn-booking" data-car-name="${car.name}">Booking</button>
                         <button class="btn btn-start" data-car-name="${car.name}" data-next-user="${nextBookingUser}" data-fuel="${car.fuel}">Mulai Pakai</button>
