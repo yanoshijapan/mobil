@@ -337,18 +337,34 @@
             submitBtn.textContent = 'Mengirim...';
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
+        
             if (form.id === 'start-form' || form.id === 'finish-form') {
                 const photoInput = form.querySelector('.photo-upload');
                 data.photos = await getUploadedFiles(photoInput);
             }
+        
             try {
-                await fetch(SPREADSHEET_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                // 1. Hapus mode: 'no-cors' agar bisa membaca respons
+                const response = await fetch(SPREADSHEET_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                
+                // 2. Ubah respons menjadi JSON
+                const updatedData = await response.json();
+        
+                if (updatedData.error) throw new Error(updatedData.error);
+                
                 alert(`Laporan '${data.formType}' berhasil dikirim!`);
                 closeModal(form.closest('.modal-overlay'));
-                setTimeout(fetchAndDisplayCarData, 3000);
+                
+                // 3. Langsung render data baru yang diterima dari server
+                renderCarCards(updatedData.carData);
+                renderHistory(updatedData.historyData);
+        
             } catch (error) {
                 console.error('Error submitting form:', error);
-                alert('Terjadi kesalahan saat mengirim laporan.');
+                alert('Terjadi kesalahan saat mengirim laporan: ' + error.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalBtnText;
