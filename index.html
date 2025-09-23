@@ -223,19 +223,20 @@
                 const fuelPercentage = calculateFuelPercentage(car.fuel);
                 const nextBookingUser = car.upcomingBookings.length > 0 ? car.upcomingBookings[0].user : '';
         
-                // --- PENAMBAHAN LOGIKA BARU DI SINI ---
+                // --- LOGIKA TAMPILAN STATUS BARU ---
                 let currentStatusHTML = '';
-                if (car.currentStatus.status === 'Dipakai') {
-                    // Jika sedang dipakai, tampilkan status "Dipakai oleh..."
-                    currentStatusHTML = `<div class="current-status status-in-use">Dipakai oleh: ${car.currentStatus.user}</div>`;
-                } else if (car.upcomingBookings.length > 0) {
-                    // JIKA TIDAK DIPAKAI, TAPI ADA BOOKING BERIKUTNYA, tampilkan status "Di-booking oleh..."
-                    currentStatusHTML = `<div class="current-status status-booked">Di-booking oleh: ${car.upcomingBookings[0].user}</div>`;
-                } else {
-                    // Jika tidak dipakai dan tidak ada booking, tampilkan "Tersedia"
-                    currentStatusHTML = `<div class="current-status status-available">Tersedia</div>`;
+                switch (car.currentStatus.status) {
+                    case 'Dipakai':
+                        currentStatusHTML = `<div class="current-status status-in-use">Dipakai oleh: ${car.currentStatus.user}</div>`;
+                        break;
+                    case 'Di-booking':
+                        currentStatusHTML = `<div class="current-status status-booked">Di-booking oleh: ${car.currentStatus.user}</div>`;
+                        break;
+                    default: // Tersedia
+                        currentStatusHTML = `<div class="current-status status-available">Tersedia</div>`;
+                        break;
                 }
-                // --- AKHIR PENAMBAHAN LOGIKA ---
+                // --- AKHIR LOGIKA TAMPILAN STATUS BARU ---
         
                 let upcomingListHTML = car.upcomingBookings.length > 0 
                     ? `<ul class="booking-list">${car.upcomingBookings.map(b => `<li><span class="user-name">${b.user}</span><span class="time-info">${b.date}<br>Jam ${b.startTime}</span></li>`).join('')}</ul>`
