@@ -40,7 +40,6 @@
             background-color: var(--surface-black);
             border-radius: 15px; padding: 20px; margin-bottom: 20px; 
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-            border: 2px solid var(--primary-blue);
             transition: transform 0.3s ease;
         }
         .car-card:hover { transform: translateY(-5px); }
@@ -67,18 +66,18 @@
                 transparent,
                 #00FFFF /* Warna neon Anda (cyan) */
             );
-            transform: translate(-50%, -50%);
-            /* Terapkan animasi berputar */
             animation: rotate-glow 4s linear infinite;
+            transform: translate(-50%, -50%);
+            z-index: -2;
         }
         .car-image-container::after {
             content: '';
             position: absolute;
             inset: 0;
-            z-index: -1; /* Tepat di belakang gambar, di depan gradien */
+            backdrop-filter: blur(10px);
             background: inherit; /* Mewarisi background hitam */
-            border-radius: inherit; /* Mewarisi border-radius */
-            backdrop-filter: blur(10px); /* Efek blur yang menciptakan glow */
+            border-radius: inherit; 
+            z-index: -1;
         }
         .car-image {
             width: 100%;
