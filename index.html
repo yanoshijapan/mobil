@@ -34,11 +34,11 @@
         .car-card { 
             background-color: var(--surface-black);
             border-radius: 15px; padding: 20px; margin-bottom: 20px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
             border: 1px solid var(--light-gray);
-            transition: transform 0.3s ease; 
+            transition: transform 0.3s ease; box-shadow 0.3s ease;
         }
-        .car-card:hover { transform: translateY(-5px); }
+        .car-card:hover { transform: translateY(-5px); box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.4); }
         .car-image-container { height: 120px; border-radius: 10px; margin-bottom: 15px; background-size: cover; background-position: center; filter: grayscale(100%); }
         .car-card[data-car-name="Avanza KZU"] .car-image-container { background-image: url('https://yanoshijapan.github.io/gambarmobil/20230924125944-3c85.jpeg'); }
         .car-card[data-car-name="Innova KFV"] .car-image-container { background-image: url('https://yanoshijapan.github.io/gambarmobil/2020-toyota-innova-crysta-trd-sportivo.jpg'); }
