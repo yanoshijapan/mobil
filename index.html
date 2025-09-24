@@ -345,7 +345,6 @@
             } else if (target.classList.contains('btn-start')) {
                 const nextUser = target.dataset.nextUser;
                 const fuel = target.dataset.fuel;
-                if (!nextUser) { alert("Tidak ada jadwal booking untuk mobil ini."); return; }
                 startForm.reset();
                 document.getElementById('start-modal-title').textContent = `Form Mulai Pakai ${carName}`;
                 document.getElementById('start-car-name-input').value = carName;
@@ -355,7 +354,6 @@
                 openModal(startModal);
             } else if (target.classList.contains('btn-finish')) {
                 const currentUser = target.dataset.currentUser;
-                if (!currentUser) { alert("Mobil ini sedang tidak dipakai oleh siapapun."); return; }
                 finishForm.reset();
                 document.getElementById('finish-modal-title').textContent = `Form Selesai Pakai ${carName}`;
                 document.getElementById('finish-car-name-input').value = carName;
