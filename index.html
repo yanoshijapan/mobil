@@ -222,7 +222,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycby2eRs8drHSJvgPVvxo4IjuKnON_4JjPhboJ0qBVjK4q6Zv-aRj2U_bxCy-tSEQTEgf/exec';
+        const SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbx0kpf7ilVaGmBEMOyY45lk-8pwHAOtq8LVFzlhTzezQ1fhKMZaUhEH1t5ixyMjMTHYKg/exec';
         const carsContainer = document.getElementById('cars-details-container');
         
         const bookingModal = document.getElementById('booking-modal');
@@ -267,7 +267,7 @@
                     case 'Dipakai':
                         currentStatusHTML = `<div class="current-status status-in-use">Dipakai oleh: ${car.currentStatus.user}</div>`;
                         break;
-                    case 'Di-booking':
+                    case 'Booked':
                         currentStatusHTML = `<div class="current-status status-booked">Di-booking oleh: ${car.currentStatus.user}</div>`;
                         break;
                     default: // Tersedia
