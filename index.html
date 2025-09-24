@@ -80,10 +80,20 @@
             border-radius: inherit; /* Mewarisi border-radius */
             backdrop-filter: blur(10px); /* Efek blur yang menciptakan glow */
         }
-        .car-card[data-car-name="Avanza KZU"] .car-image-container::before {
+        .car-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%);
+            border-radius: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        .car-card[data-car-name="Avanza KZU"] .car-image {
             background-image: url('https://yanoshijapan.github.io/gambarmobil/20230924125944-3c85.jpeg');
         }
-        .car-card[data-car-name="Innova KFV"] .car-image-container::before {
+        .car-card[data-car-name="Innova KFV"] .car-image {
             background-image: url('https://yanoshijapan.github.io/gambarmobil/2020-toyota-innova-crysta-trd-sportivo.jpg');
         }    
         .car-header { display: flex; align-items: center; gap: 15px; font-size: 0.9rem; font-weight: 600; color: var(--text-color); }
@@ -306,7 +316,7 @@
                     : `<p class="no-booking">Belum ada jadwal booking.</p>`;
         
                 card.innerHTML = `
-                    <div class="car-image-container"></div>
+                    <div class="car-image-container"><div class="car-image"></div></div>
                     <div class="car-header"><i class="fas fa-car-side fa-lg"></i><h2>${car.name}</h2></div>
                     <div class="fuel-container">
                         <i class="fas fa-gas-pump fuel-icon"></i>
