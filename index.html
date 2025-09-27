@@ -48,6 +48,7 @@
         .fuel-icon { font-size: 1.5rem; color: var(--accent-blue); }
         .fuel-bar-background { flex-grow: 1; height: 20px; background-color: var(--light-gray); border-radius: 10px; overflow: hidden; }
         .fuel-bar-percentage { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-blue), #85c1e9); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bg-black); font-weight: 600; font-size: 0.8rem; transition: width 1s cubic-bezier(0.25, 1, 0.5, 1); }
+        .maintenance-info { margin-top: 15px; padding: 10px; background-color: var(--light-gray); border-radius: 8px; text-align: center; font-size: 0.9rem; font-weight: 600; color: var(--accent-blue); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .status-section { margin-top: 15px; }
         .current-status { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; padding-top: 15px; border-top: 1px solid var(--light-gray); }
         .status-available { color: var(--accent-green); }
@@ -78,14 +79,11 @@
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4); }
         .modal-submit-btn { width: 100%; padding: 15px; background-color: var(--accent-blue); color: var(--bg-black); border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
         .modal-submit-btn:disabled { background-color: var(--dark-gray); cursor: wait; }
-        
-        /* === CSS UNTUK TOMBOL RADIO NEON (BENAR) === */
         .radio-group input[type="radio"] { opacity: 0; position: fixed; width: 0; }
         .radio-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
         .radio-group label { display: inline-block; padding: 10px 12px; background-color: var(--light-gray); border: 2px solid var(--dark-gray); border-radius: 8px; text-align: center; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
         .radio-group label:hover { border-color: var(--accent-blue); }
         .radio-group input[type="radio"]:checked + label { background-color: var(--accent-blue); color: var(--bg-black); border-color: var(--primary-blue); box-shadow: 0 0 12px rgba(52, 152, 219, 0.7); }
-        
         .photo-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
         .photo-preview img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
         .history-button-container { text-align: center; margin-top: 25px; }
@@ -131,7 +129,6 @@
                 <input type="hidden" id="start-car-name-input" name="carName">
                 <div class="form-group"><label for="start-tanggal-cek">Tanggal Cek</label><input type="date" id="start-tanggal-cek" name="tanggalCek" required></div>
                 <div class="form-group"><label for="start-nama-pengguna">Nama</label><input type="text" id="start-nama-pengguna" name="namaPengguna" required readonly></div>
-                
                 <div class="form-group">
                     <label>Kondisi Ban</label>
                     <div class="radio-group">
@@ -140,7 +137,6 @@
                         <input type="radio" id="start-ban-periksa" name="kondisiBan" value="Perlu Diperiksa"><label for="start-ban-periksa">Perlu Diperiksa</label>
                     </div>
                 </div>
-                
                 <div class="form-group">
                     <label>Kondisi Lampu</label>
                     <div class="radio-group">
@@ -148,7 +144,6 @@
                         <input type="radio" id="start-lampu-mati" name="kondisiLampu" value="Ada yang Mati"><label for="start-lampu-mati">Ada yang Mati</label>
                     </div>
                 </div>
-
                 <div class="form-group"><label for="start-interior">Kebersihan Interior</label><select id="start-interior" name="interior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
                 <div class="form-group"><label for="start-eksterior">Kebersihan Eksterior</label><select id="start-eksterior" name="eksterior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
                 <div class="form-group"><label for="start-km-awal">Kilometer Awal</label><input type="number" id="start-km-awal" name="kmAwal" required></div>
@@ -169,7 +164,6 @@
                 <input type="hidden" id="finish-car-name-input" name="carName">
                 <div class="form-group"><label for="finish-tanggal-cek">Tanggal Cek</label><input type="date" id="finish-tanggal-cek" name="tanggalCek" required></div>
                 <div class="form-group"><label for="finish-nama-pengecek">Siapa yang Cek?</label><input type="text" id="finish-nama-pengecek" name="namaPengecek" required readonly></div>
-                
                 <div class="form-group">
                     <label>Kondisi Ban</label>
                     <div class="radio-group">
@@ -178,7 +172,6 @@
                         <input type="radio" id="finish-ban-periksa" name="kondisiBan" value="Perlu Diperiksa"><label for="finish-ban-periksa">Perlu Diperiksa</label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Kondisi Lampu</label>
                     <div class="radio-group">
@@ -186,7 +179,6 @@
                         <input type="radio" id="finish-lampu-mati" name="kondisiLampu" value="Ada yang Mati"><label for="finish-lampu-mati">Ada yang Mati</label>
                     </div>
                 </div>
-
                 <div class="form-group"><label for="finish-interior">Kebersihan Interior</label><select id="finish-interior" name="interior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
                 <div class="form-group"><label for="finish-eksterior">Kebersihan Eksterior</label><select id="finish-eksterior" name="eksterior" required><option value="">Pilih...</option><option>Sangat Bersih</option><option>Bersih</option><option>Tidak Terlalu Kotor</option><option>Kotor</option><option>Sangat Kotor</option></select></div>
                 <div class="form-group"><label for="finish-km-akhir">Kilometer Akhir</label><input type="number" id="finish-km-akhir" name="kmAkhir" required></div>
@@ -280,6 +272,10 @@
                     <div class="fuel-container">
                         <i class="fas fa-gas-pump fuel-icon"></i>
                         <div class="fuel-bar-background"><div class="fuel-bar-percentage" style="width: ${fuelPercentage}%;">${Math.round(fuelPercentage)}%</div></div>
+                    </div>
+                    <div class="maintenance-info">
+                        <i class="fas fa-oil-can"></i>
+                        <span>${car.kmToService.toLocaleString('id-ID')} KM lagi untuk ganti oli</span>
                     </div>
                     <div class="status-section">
                         ${currentStatusHTML}
