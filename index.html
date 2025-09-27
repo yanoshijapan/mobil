@@ -273,10 +273,12 @@
                         <i class="fas fa-gas-pump fuel-icon"></i>
                         <div class="fuel-bar-background"><div class="fuel-bar-percentage" style="width: ${fuelPercentage}%;">${Math.round(fuelPercentage)}%</div></div>
                     </div>
+                    
                     <div class="maintenance-info">
                         <i class="fas fa-oil-can"></i>
                         <span>${car.kmToService.toLocaleString('id-ID')} KM lagi untuk ganti oli</span>
                     </div>
+
                     <div class="status-section">
                         ${currentStatusHTML}
                         <div class="booking-list-title">Jadwal Booking:</div>
