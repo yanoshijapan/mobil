@@ -11,33 +11,16 @@
     
     <style>
         :root {
-            --primary-blue: #005A9C;
-            --accent-blue: #3498db;      /* Aksen Biru Muda */
-            --accent-green: #2ecc71;      /* Hijau yang lebih cerah */
-            --light-gray: #333;         /* Abu-abu terang untuk border/background */
-            --dark-gray: #555;          /* Abu-abu gelap */
-            --bg-black: #121212;        /* Latar Belakang Hitam */
-            --surface-black: #1e1e1e;   /* Warna permukaan (untuk card) */
-            --text-color: #f5f5f5;      /* Warna Teks Putih */
+            --primary-blue: #005A9C; --accent-blue: #3498db; --accent-green: #2ecc71;
+            --light-gray: #333; --dark-gray: #555; --bg-black: #121212;
+            --surface-black: #1e1e1e; --text-color: #f5f5f5;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: var(--bg-black);
-            color: var(--text-color);
-            display: flex; justify-content: center; align-items: flex-start; 
-            min-height: 100vh; padding: 20px; 
-        }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-black); color: var(--text-color); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 20px; }
         .main-container { width: 100%; max-width: 500px; opacity: 0; transform: translateY(20px); animation: fadeIn 1s ease-out forwards; }
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
         header h1 { text-align: center; color: var(--accent-blue); font-size: 2rem; margin-bottom: 2rem; font-weight: 700; }
-        .car-card { 
-            background-color: var(--surface-black);
-            border-radius: 15px; padding: 20px; margin-bottom: 20px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-            border: 1px solid var(--light-gray);
-            transition: transform 0.3s ease; 
-        }
+        .car-card { background-color: var(--surface-black); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border: 1px solid var(--light-gray); transition: transform 0.3s ease; }
         .car-card:hover { transform: translateY(-5px); }
         .car-image-container { height: 120px; border-radius: 10px; margin-bottom: 15px; background-size: cover; background-position: center; }
         .car-card[data-car-name="Avanza KZU"] .car-image-container { background-image: url('https://yanoshijapan.github.io/gambarmobil/20230924125944-3c85.jpeg'); }
@@ -60,11 +43,9 @@
         .no-booking { font-style: italic; color: #aaa; font-size: 0.9rem; }
         .button-group { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         .btn { text-decoration: none; color: var(--text-color); padding: 12px 5px; border-radius: 8px; text-align: center; font-weight: 600; border: none; cursor: pointer; font-size: 0.8rem; transition: background-color 0.3s ease; }
-        .btn:active { transform: scale(0.97); }
         .btn-booking { background-color: var(--accent-blue); color: var(--bg-black); }
         .btn-start { background-color: var(--accent-green); color: var(--bg-black); }
         .btn-finish { background-color: var(--dark-gray); }
-        .loader { text-align: center; padding: 20px; font-size: 1rem; color: var(--accent-blue); }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: none; justify-content: center; align-items: flex-start; padding-top: 5vh; overflow-y: auto; opacity: 0; z-index: 1000; transition: opacity 0.4s ease; }
         .modal-overlay.show { display: flex; opacity: 1; }
         .modal-content { background-color: var(--surface-black); color: var(--text-color); padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); transform: scale(0.9); animation: zoomIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; margin-bottom: 5vh; }
@@ -257,7 +238,7 @@
                     case 'Di-booking':
                         currentStatusHTML = `<div class="current-status status-booked">Di-booking oleh: ${car.currentStatus.user}</div>`;
                         break;
-                    default: // Tersedia
+                    default:
                         currentStatusHTML = `<div class="current-status status-available">Tersedia</div>`;
                         break;
                 }
