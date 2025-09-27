@@ -141,7 +141,7 @@
         .radio-group {
             display: grid;
             /* Buat kolom yang responsif, minimal 100px */
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
             gap: 10px; /* Jarak antar tombol */
         }
         
@@ -168,8 +168,8 @@
         /* 5. Ini bagian terpenting: Style untuk tombol yang DIPILIH */
         .radio-group input[type="radio"]:checked + label {
             background-color: var(--accent-blue);  /* Warna latar berubah */
-            color: var(--bg-black);                 /* Warna teks berubah */
-            border-color: var(--primary-blue);      /* Warna border menyala */
+            color: var(--bg-black);                /* Warna teks berubah */
+            border-color: var(--primary-blue);     /* Warna border menyala */
             /* Tambahkan efek glow neon! */
             box-shadow: 0 0 12px rgba(0, 255, 255, 0.7);
         }
